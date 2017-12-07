@@ -20,19 +20,29 @@ namespace Day5
 
             int steps = 0;
             int currentIndex = 0;
-            int previousIndex = 0;
-            while(true)
+            while(currentIndex >= 0 && currentIndex < maze.Count)
             {
-                previousIndex = currentIndex;
-                currentIndex = currentIndex + maze[currentIndex];
-                maze[previousIndex] = maze[previousIndex]++;
-                steps++;
-                if(currentIndex < 0 || currentIndex >= maze.Count)
+                // Part 1
+                //maze[currentIndex] = maze[currentIndex] + 1;
+                //currentIndex = currentIndex + maze[currentIndex] - 1;
+
+                // Part 2
+                if(maze[currentIndex] >= 3)
                 {
-                    Console.WriteLine(steps);
-                    Console.ReadLine();
+                    maze[currentIndex] = maze[currentIndex] - 1;
+                    currentIndex = currentIndex + maze[currentIndex] + 1;
                 }
+                else
+                {
+                    maze[currentIndex] = maze[currentIndex] + 1;
+                    currentIndex = currentIndex + maze[currentIndex] - 1;
+                }
+
+                steps++;
             }
+
+            Console.WriteLine(steps);
+            Console.ReadLine();
         }
     }
 }
