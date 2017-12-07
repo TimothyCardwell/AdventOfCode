@@ -2,7 +2,7 @@
 
 namespace Day2
 {
-    class Program
+    class Checksumss
     {
         const string Input = @"278	1689	250	1512	1792	1974	175	1639	235	1635	1690	1947	810	224	928	859
 160	50	55	81	68	130	145	21	211	136	119	78	174	155	149	72
