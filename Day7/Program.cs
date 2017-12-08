@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Day7
 {
@@ -103,23 +104,22 @@ cntj (57)";
             else
             {
                 int totalWeight = 0;
-                List<int> uniqueWeights = new List<int>();
+                List<int> childWeights = new List<int>();
                 foreach (Node childNode in rootNode.Children)
                 {
                     int childWeight = SumWeights(childNode);
                     totalWeight += childWeight;
-
-                    //if (!uniqueWeights.Contains(childWeight))
-                    //{
-                    //    uniqueWeights.Add(childWeight);
-                    //}
+                    childWeights.Add(childWeight);
                 }
 
-                //if(uniqueWeights.Count > 1)
-                //{
-                //    Console.WriteLine(Math.Abs(uniqueWeights[0] - uniqueWeights[1]));
-                //    Console.ReadLine();
-                //}
+                if(childWeights.Distinct().Count() > 1)
+                {
+                    // The first time this is hit will be the unbalanced program
+                    // Specifically, the index of the mismatched value in childWeights will match the index
+                    // of the rootNode.Children that is off balance. Then take the weight of that node and subtract
+                    // it by the difference of the two weights in childWeights
+                    Console.ReadLine();
+                }
                 return totalWeight + rootNode.Weight;
             }
         }
