@@ -16,6 +16,8 @@ c inc -20 if c == 10";
         {
             List<Instruction> instructions = new List<Instruction>();
             Dictionary<string, int> registries = new Dictionary<string, int>();
+
+            // Parse input
             using(StreamReader streamReader = new StreamReader("input.txt"))
             //using(StringReader streamReader = new StringReader(SampleInput))
             {
@@ -38,9 +40,11 @@ c inc -20 if c == 10";
                 }
             }
 
+            // Execute instructions
             int highestValue = Int32.MinValue;
             foreach(Instruction instruction in instructions)
             {
+                // Evaluate statement
                 bool isStatementTrue = false;
                 switch(instruction.Operator)
                 {
@@ -66,6 +70,7 @@ c inc -20 if c == 10";
                         throw new ArgumentException("Invalid operator!");
                 }
 
+                // Modify registry
                 if (isStatementTrue)
                 {
                     int value = instruction.Action == Action.Increase ?
@@ -73,6 +78,7 @@ c inc -20 if c == 10";
                         registries[instruction.Registry] - instruction.Value;
                     registries[instruction.Registry] = value;
 
+                    // Keep track of highest value
                     if(value > highestValue)
                     {
                         highestValue = value;
