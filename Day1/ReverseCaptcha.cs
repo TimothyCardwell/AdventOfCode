@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 
 class ReverseCaptcha
@@ -9,6 +10,7 @@ class ReverseCaptcha
         int sum = 0;
         for (int i = 0; i < PuzzleInput.Length; i++)
         {
+            Debug.WriteLine($"Current iteration: {i}");
             char current = PuzzleInput[i];
             char next;
 
