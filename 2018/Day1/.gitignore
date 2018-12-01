@@ -1,0 +1,11 @@
+dist/
+node_modules/
+
+# Custom extension manifest
+extension-*.json
+
+# VSIX Packages (vset output)
+*.vsix
+
+#npm log
+npm-debug.log
