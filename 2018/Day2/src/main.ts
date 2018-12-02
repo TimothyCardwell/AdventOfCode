@@ -5,6 +5,7 @@ function run() {
   const boxIdChecksum = new BoxIdChecksum(input);
 
   console.log(`Checksum: ${boxIdChecksum.Checksum}`);
+  console.log(`Prototype Box Id: ${boxIdChecksum.PrototypeBoxId}`);
 }
 
 run();
