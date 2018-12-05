@@ -11,6 +11,8 @@ function run() {
 
 /**
  * Note to self, stop using Typescript
+ *
+ * This LineByLineReader function is dumb, where is C# when I need it?
  */
 function processInput(): void {
   const claims = new Collections.LinkedList<Claim>();
@@ -29,31 +31,59 @@ function processInput(): void {
   });
 }
 
+/**
+ * Note to self, stop using Typescript
+ */
 function processClaims(claims: Collections.LinkedList<Claim>) {
   const santaSuit = generateSantaSuit();
+
+  const overlappedClaims: Set<number> = new Set<number>();
   claims.forEach(c => {
-    //console.log(`Left Padding: ${c.leftPadding}\nTop Padding: ${c.topPadding}\nWidth: ${c.width}\nHeight: ${c.height}`);
     for (let i = c.topPadding; i < c.topPadding + c.height; i++) {
       for (let j = c.leftPadding; j < c.leftPadding + c.width; j++) {
-        //console.log(i);
-        //console.log(j);
-        santaSuit[i][j] += 1;
+
+        // Part 1
+        //santaSuit[i][j] += 1;
+
+        // Square has never been visited yet, update with the id
+        if (santaSuit[i][j] === 0) {
+          santaSuit[i][j] = c.id;
+        }
+
+        // Square has been visited before, need to add the existing claim
+        // to the overlap set and the current claim to the overlap set
+        else if (santaSuit[i][j] !== -1) {
+          overlappedClaims.add(santaSuit[i][j]);
+          overlappedClaims.add(c.id);
+          santaSuit[i][j] = -1; // -1 to indicate this square has been visited multiple times
+        }
+
+        // Multiple claims target this square, add the current to the overlap set
+        else {
+          overlappedClaims.add(c.id);
+        }
       }
     }
   });
 
+  // Part 1
+  /*
   let overlappedSquareCount = 0;
   for (let i = 0; i < 1000; i++) {
-    //process.stdout.write("\n");
     for (let j = 0; j < 1000; j++) {
-      //process.stdout.write(`${santaSuit[i][j]}`);
       if (santaSuit[i][j] > 1) {
         overlappedSquareCount++;
       }
     }
   }
+  */
 
-  process.stdout.write(`\n${overlappedSquareCount}`);
+  claims.forEach(c => {
+    if (!overlappedClaims.has(c.id)) {
+      console.log(c.id);
+      return;
+    }
+  });
 }
 
 /**
