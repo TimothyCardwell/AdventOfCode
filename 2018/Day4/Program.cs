@@ -48,10 +48,15 @@ namespace SleepingGuardMonitor
         }
       }
 
-      var sleepiestGuard = guardShifts.OrderByDescending(g => g.Value.GetTotalMinutesSlept()).First();
-      Debug.WriteLine(sleepiestGuard.Key);
-      Debug.WriteLine(sleepiestGuard.Value.GetFavoriteMinuteSlept());
+      // Part 1
+      //var sleepiestGuard = guardShifts.OrderByDescending(g => g.Value.GetTotalMinutesSlept()).First();
+      //Debug.WriteLine(sleepiestGuard.Key);
+      //Debug.WriteLine(sleepiestGuard.Value.GetFavoriteMinuteSlept());
 
+      // Part 2 
+      var sleepiestGuardMinute = guardShifts.OrderByDescending(g => g.Value.GetFavoriteMinuteSlept().Value).First();
+      Debug.WriteLine(sleepiestGuardMinute.Key);
+      Debug.WriteLine(sleepiestGuardMinute.Value.GetFavoriteMinuteSlept());
     }
 
     private static SortedList GetSortedGaurdStatusLog()

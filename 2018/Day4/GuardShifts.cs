@@ -47,7 +47,7 @@ namespace SleepingGuardMonitor
       return totalMinutesSlept;
     }
 
-    public int GetFavoriteMinuteSlept()
+    public KeyValuePair<int, int> GetFavoriteMinuteSlept()
     {
       var aggregate = new List<KeyValuePair<int, int>>();
       foreach (var shift in _shifts)
@@ -59,7 +59,6 @@ namespace SleepingGuardMonitor
         .GroupBy(m => m.Key)
         .ToDictionary(item => item.Key, item => item.Select(kvp => kvp.Value).Sum())
         .OrderByDescending(x => x.Value)
-        .Select(x => x.Key)
         .First();
 
       return favoriteMinute;
