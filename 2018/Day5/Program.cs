@@ -12,7 +12,13 @@ namespace PolymerScanner
     static void Main(string[] args)
     {
       var polymerList = BuildPolymerList();
+      PartOne(polymerList);
+      PartTwo(polymerList);
+    }
 
+
+    private static void PartOne(LinkedList<char> polymerList)
+    {
       var currentNode = polymerList.First;
       while (currentNode != null)
       {
@@ -20,14 +26,34 @@ namespace PolymerScanner
         currentNode = nextNode;
       }
 
-      //Console.WriteLine(RebuildPolymerString());
-      Console.WriteLine(RebuildPolymerString(polymerList).Length);
+      Console.WriteLine($"Part One: {RebuildPolymerString(polymerList).Length}");
+    }
+
+    private static void PartTwo(LinkedList<char> polymerList)
+    {
+      var polymerReactionResults = new Dictionary<char, int>();
+      List<char> characters = new List<char> { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+
+      foreach (var character in characters)
+      {
+        var characterlessPolymerList = RemoveCharacterFromPolymer(polymerList, character);
+        var currentNode = characterlessPolymerList.First;
+        while (currentNode != null)
+        {
+          var nextNode = CheckForReactions(characterlessPolymerList, currentNode);
+          currentNode = nextNode;
+        }
+
+        Console.WriteLine($"Part Two ({character}): {RebuildPolymerString(characterlessPolymerList).Length}");
+        polymerReactionResults.Add(character, RebuildPolymerString(characterlessPolymerList).Length);
+      }
+
+      Console.WriteLine($"Lowest reaction length: {polymerReactionResults.OrderBy(x => x.Value).First().Value}");
     }
 
     public static LinkedList<char> BuildPolymerList()
     {
       var input = File.ReadAllText("input.txt");
-      Console.WriteLine(input.Length);
       //var input = "dabAcCaCBAcCcaDA";
 
       var polymerList = new LinkedList<char>();
@@ -61,12 +87,14 @@ namespace PolymerScanner
         polymerList.Remove(currentNode);
 
         // No nodes left to process
-        if (nextNodeTemp == null) {
+        if (nextNodeTemp == null)
+        {
           return null;
         }
 
         // Reached the beginning of the linked list, return the new first node
-        if (nextNodeTemp.Previous == null) {
+        if (nextNodeTemp.Previous == null)
+        {
           return nextNodeTemp;
         }
 
@@ -90,6 +118,24 @@ namespace PolymerScanner
         currentNode = currentNode.Next;
       }
       return sb.ToString();
+    }
+
+    private static LinkedList<char> RemoveCharacterFromPolymer(LinkedList<char> polymerList, char character)
+    {
+      var newList = new LinkedList<char>();
+
+      var currentNode = polymerList.First;
+      while (currentNode != null)
+      {
+        if (Char.ToLower(currentNode.Value) != Char.ToLower(character))
+        {
+          newList.AddLast(new LinkedListNode<char>(currentNode.Value));
+        }
+
+        currentNode = currentNode.Next;
+      }
+
+      return newList;
     }
   }
 }
