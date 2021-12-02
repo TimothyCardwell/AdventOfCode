@@ -5,6 +5,7 @@ use std::io::BufReader;
 struct Submarine {
     horizontal_position: i32,
     depth_position: i32,
+    aim: i32,
 }
 
 impl Submarine {
@@ -12,6 +13,7 @@ impl Submarine {
         return Submarine {
             horizontal_position: 0,
             depth_position: 0,
+            aim: 0,
         };
     }
 
@@ -27,7 +29,14 @@ impl Submarine {
         self.horizontal_position += value;
     }
 
-    fn calculate_part_one(&self) -> i32 {
+    fn increase_aim(&mut self, value: i32) {
+        self.aim += value;
+    }
+    fn decrease_aim(&mut self, value: i32) {
+        self.aim -= value;
+    }
+
+    fn calculate(&self) -> i32 {
         return self.depth_position * self.horizontal_position;
     }
 }
@@ -41,18 +50,31 @@ fn main() {
         let instruction = pieces.get(0).unwrap();
         let value = pieces.get(1).unwrap().parse::<i32>().unwrap();
 
+        // Part one
+        // if *instruction == "forward" {
+        //     sub.increase_horizontal(value);
+        // } else if *instruction == "down" {
+        //     sub.increase_depth(value);
+        // } else if *instruction == "up" {
+        //     sub.decrease_depth(value);
+        // } else {
+        //     panic!();
+        // }
+
+        // Part two
         if *instruction == "forward" {
             sub.increase_horizontal(value);
+            sub.increase_depth(sub.aim * value);
         } else if *instruction == "down" {
-            sub.increase_depth(value);
+            sub.increase_aim(value);
         } else if *instruction == "up" {
-            sub.decrease_depth(value);
+            sub.decrease_aim(value);
         } else {
             panic!();
         }
     }
 
-    println!("Solution for Part One: {}", sub.calculate_part_one());
+    println!("Solution: {}", sub.calculate());
 }
 
 fn read_input() -> Vec<String> {
