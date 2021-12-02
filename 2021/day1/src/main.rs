@@ -1,7 +1,7 @@
+use std::convert::From;
+use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
-use std::fs::File;
-use std::convert::From;
 
 fn main() {
     //let puzzle_input = get_puzzle_input();
@@ -12,9 +12,11 @@ fn main() {
     for depth in puzzle_input.iter() {
         match previous_depth {
             Some(x) => {
-                if *depth > x { increase_count += 1; }
+                if *depth > x {
+                    increase_count += 1;
+                }
             }
-            None => ()
+            None => (),
         }
 
         previous_depth = Option::from(*depth);
@@ -23,8 +25,7 @@ fn main() {
     println!("Increase Count: {}", increase_count);
 }
 
-fn get_puzzle_input() -> Result<Vec<u32>, String>
-{
+fn get_puzzle_input() -> Result<Vec<u32>, String> {
     let mut puzzle_input: Vec<u32> = Vec::new();
 
     let file = File::open("input.txt");
@@ -32,18 +33,15 @@ fn get_puzzle_input() -> Result<Vec<u32>, String>
         Ok(file) => {
             for line in BufReader::new(file).lines() {
                 match line {
-                    Ok(line) => {
-                        match line.parse::<u32>() {
-                            Ok(value) => {
-                                puzzle_input.push(value);
-                            }
-                            Err(err) => {
-                                println!("Error parsing value: {}", err);
-                                return Err(String::from("Error parsing value!"));
-                            }
+                    Ok(line) => match line.parse::<u32>() {
+                        Ok(value) => {
+                            puzzle_input.push(value);
                         }
-
-                    }
+                        Err(err) => {
+                            println!("Error parsing value: {}", err);
+                            return Err(String::from("Error parsing value!"));
+                        }
+                    },
                     Err(err) => {
                         println!("Error reading line: {}", err);
                         return Err(String::from("Error reading line!"));
@@ -60,12 +58,14 @@ fn get_puzzle_input() -> Result<Vec<u32>, String>
     }
 }
 
-fn get_puzzle_input_part_two() -> Vec<u32>
-{
+fn get_puzzle_input_part_two() -> Vec<u32> {
     let mut puzzle_input: Vec<u32> = Vec::new();
 
     let file = BufReader::new(File::open("input.txt").unwrap());
-    let lines: Vec<u32> = file.lines().map(|line| { line.unwrap().parse::<u32>().unwrap() }).collect();
+    let lines: Vec<u32> = file
+        .lines()
+        .map(|line| line.unwrap().parse::<u32>().unwrap())
+        .collect();
     //let lines = vec![199, 200, 208, 210, 200, 207, 240, 269, 260, 263];
 
     let mut index: usize = 0;
@@ -78,8 +78,7 @@ fn get_puzzle_input_part_two() -> Vec<u32>
             window_counter = 0;
             window_value = 0;
             index -= 2;
-        }
-        else {
+        } else {
             window_value += lines.get(index).unwrap();
             window_counter += 1;
             index += 1;
