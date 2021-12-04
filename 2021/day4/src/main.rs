@@ -1,26 +1,35 @@
+use std::collections::HashSet;
 use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
 
 fn main() {
     let (mut bingo_boards, numbers) = parse_input();
+    let board_count = bingo_boards.len();
 
-    println!("Board Count: {}", bingo_boards.len());
+    println!("Board Count: {}", board_count);
+
+    let mut winning_boards: HashSet<usize> = HashSet::with_capacity(board_count);
 
     for number in numbers {
-        for board in bingo_boards.iter_mut() {
+        for (i, board) in bingo_boards.iter_mut().enumerate() {
             board.mark_number(number);
 
             if board.is_winner {
-                let unmarked_sum = board.sum_unmarked_numbers();
-                let final_number = number;
-                println!(
-                    "Umarked Sum: {}, Final Number: {}, Part One Answer: {}",
-                    unmarked_sum,
-                    final_number,
-                    unmarked_sum * final_number
-                );
-                return;
+                winning_boards.insert(i);
+
+                // Final board
+                if winning_boards.len() == board_count {
+                    let unmarked_sum = board.sum_unmarked_numbers();
+                    let final_number = number;
+                    println!(
+                        "Umarked Sum: {}, Final Number: {}, Part One Answer: {}",
+                        unmarked_sum,
+                        final_number,
+                        unmarked_sum * final_number
+                    );
+                    return;
+                }
             }
         }
     }
