@@ -113,11 +113,34 @@ impl PointToPoint {
 
                 source_point.x += 1;
             }
-        } else {
-            println!(
-                "Invalid Point Mapping: {:?} -> {:?}",
-                self.source_point, self.target_point
-            );
+        }
+        // Diagonal
+        else {
+            // To make iteration easy, we choose the source point to be the smaller x value
+            let mut source_point = if self.source_point.x < self.target_point.x {
+                self.source_point
+            } else {
+                self.target_point
+            };
+            let target_point = if self.source_point.x < self.target_point.x {
+                self.target_point
+            } else {
+                self.source_point
+            };
+
+            while source_point.x <= target_point.x {
+                points.push(Point {
+                    x: source_point.x,
+                    y: source_point.y,
+                });
+
+                source_point.x += 1;
+                if source_point.y < target_point.y {
+                    source_point.y += 1;
+                } else {
+                    source_point.y -= 1;
+                }
+            }
         }
 
         return points;
