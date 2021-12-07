@@ -2,6 +2,8 @@ use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
 
+/// This is brute forced - it works fine and solves immediately, but there must be a way to solve this in O(n) time.
+/// I'd have to imagine some mathematic principle exists here that I am not aware of, maybe a combinatrics theory
 fn main() {
     let starting_positions = parse_input();
 
@@ -17,7 +19,7 @@ fn main() {
         let mut cost: u32 = 0;
         for starting_position in &starting_positions {
             let negative_number: i32 = starting_position - position;
-            cost += negative_number.abs() as u32;
+            cost += calculate_nth_triangle_number(negative_number.abs() as u32);
         }
 
         match min_cost {
@@ -35,6 +37,12 @@ fn main() {
     }
 
     println!("Position: {}, Min Cost: {}", position, min_cost.unwrap());
+}
+
+/// Turns out part 2 was easily solved with the above algorithm, just need to use the
+/// nth triangle number to determine the cost.
+fn calculate_nth_triangle_number(val: u32) -> u32 {
+    return ((val * val) + val) / 2;
 }
 
 fn parse_input() -> Vec<i32> {
