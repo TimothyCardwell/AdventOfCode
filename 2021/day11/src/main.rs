@@ -4,19 +4,23 @@ use std::io::BufReader;
 
 fn main() {
     let mut octopuses = parse_input();
+    let octopus_count = octopuses.len() * octopuses.get(0).unwrap().len();
 
-    let mut flash_count = 0;
+    let mut all_flashed = false;
     let mut i = 0;
-    while i < 100 {
+    while !all_flashed {
         increase_energy_levels(&mut octopuses);
         check_flash(&mut octopuses);
-        flash_count += reset_flashes(&mut octopuses);
+        let flash_count = reset_flashes(&mut octopuses) as usize;
+        if flash_count == octopus_count {
+            all_flashed = true;
+        }
         i += 1;
     }
 
     print(&mut octopuses);
 
-    println!("Part One: {}", flash_count);
+    println!("Part Two: {}", i);
 }
 
 fn increase_energy_levels(matrix: &mut Vec<Vec<Octopus>>) {
